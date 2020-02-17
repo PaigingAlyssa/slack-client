@@ -5,5 +5,5 @@ public interface SlackMethod {
   MethodWriteMode getWriteMode();
   RateLimitingTier getRateLimitingTier();
   JsonStatus jsonWhitelistStatus();
-  Boolean needsToken();
+  TokenMode tokenMode();
 }

@@ -53,7 +53,6 @@ import com.hubspot.slack.client.methods.params.users.UsersListParams;
 import com.hubspot.slack.client.methods.params.views.OpenViewParams;
 import com.hubspot.slack.client.methods.params.views.PublishViewParams;
 import com.hubspot.slack.client.methods.params.views.UpdateViewParams;
-import com.hubspot.slack.client.models.APIVersion;
 import com.hubspot.slack.client.models.LiteMessage;
 import com.hubspot.slack.client.models.SlackChannel;
 import com.hubspot.slack.client.models.conversations.Conversation;
@@ -230,8 +229,13 @@ public interface SlackClient extends Closeable {
       Class<T> returnClazz
   );
 
-  //oauth
-  // TODO
-  CompletableFuture<Result<OauthAccessResponse, SlackError>> oauthAccess(OauthAccessParams params);
+//  CompletableFuture<Result<OauthAccessResponse, SlackError>> oauthAccess(OauthAccessParams params);
+
+  /**
+   * https://api.slack.com/methods/oauth.v2.access
+   * @param params
+   * @return
+   */
+  CompletableFuture<Result<OauthAccessResponse, SlackError>> oauthV2Access(OauthAccessParams params);
 //  CompletableFuture<Result<ModalViewCommandResponse, SlackError>> oauthToken(OpenViewParams params);
 }

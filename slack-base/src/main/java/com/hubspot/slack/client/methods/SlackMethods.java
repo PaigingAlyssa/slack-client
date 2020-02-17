@@ -1,5 +1,7 @@
 package com.hubspot.slack.client.methods;
 
+import java.util.StringJoiner;
+
 /**
  * Slack api method names inferred by converting '_' to '.', so make sure they match.
  */
@@ -109,8 +111,8 @@ public enum SlackMethods implements SlackMethod {
   mpim_open(MethodWriteMode.WRITE, RateLimitingTiers.TIER_3, JsonStatus.ACCEPTS_JSON),
   mpim_replies(MethodWriteMode.READ, RateLimitingTiers.TIER_2, JsonStatus.FORM_ENCODING_ONLY),
 
-  oauth_access(MethodWriteMode.WRITE, RateLimitingTiers.TIER_4, JsonStatus.FORM_ENCODING_ONLY),
-  oauth_v2_access(MethodWriteMode.WRITE, RateLimitingTiers.TIER_4, JsonStatus.FORM_ENCODING_ONLY, false),
+  oauth_access(MethodWriteMode.WRITE, RateLimitingTiers.TIER_4, JsonStatus.FORM_ENCODING_ONLY, TokenMode.NONE),
+  oauth_v2_access(MethodWriteMode.WRITE, RateLimitingTiers.TIER_4, JsonStatus.FORM_ENCODING_ONLY, TokenMode.NONE),
   oauth_token(MethodWriteMode.WRITE, RateLimitingTiers.TIER_4, JsonStatus.FORM_ENCODING_ONLY),
 
   pins_add(MethodWriteMode.WRITE, RateLimitingTiers.TIER_2, JsonStatus.ACCEPTS_JSON),
@@ -173,13 +175,12 @@ public enum SlackMethods implements SlackMethod {
   views_update(MethodWriteMode.WRITE, RateLimitingTiers.TIER_4, JsonStatus.ACCEPTS_JSON),
   views_push(MethodWriteMode.WRITE, RateLimitingTiers.TIER_4, JsonStatus.ACCEPTS_JSON),
   views_publish(MethodWriteMode.WRITE, RateLimitingTiers.TIER_4, JsonStatus.ACCEPTS_JSON),
-
   ;
 
   private final MethodWriteMode writeMode;
   private final RateLimitingTier rateLimitingTier;
   private final JsonStatus jsonStatus;
-  private final Boolean needsToken;
+  private final TokenMode needsToken;
 
   SlackMethods(
       MethodWriteMode writeMode,
@@ -189,19 +190,19 @@ public enum SlackMethods implements SlackMethod {
     this.writeMode = writeMode;
     this.rateLimitingTier = rateLimitingTier;
     this.jsonStatus = jsonStatus;
-    this.needsToken = true;
+    this.needsToken = TokenMode.REQUIRED;
   }
 
   SlackMethods(
           MethodWriteMode writeMode,
           RateLimitingTier rateLimitingTier,
           JsonStatus jsonStatus,
-          Boolean needsToken
+          TokenMode tokenMode
   ) {
     this.writeMode = writeMode;
     this.rateLimitingTier = rateLimitingTier;
     this.jsonStatus = jsonStatus;
-    this.needsToken = false;
+    this.needsToken = tokenMode;
   }
 
   @Override
@@ -225,6 +226,6 @@ public enum SlackMethods implements SlackMethod {
   }
 
   @Override
-  public Boolean needsToken() {  return needsToken; }
+  public TokenMode tokenMode() {  return needsToken; }
 
 }
